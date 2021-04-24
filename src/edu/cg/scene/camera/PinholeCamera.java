@@ -56,7 +56,7 @@ public class PinholeCamera {
 	 */
 	public Point transform(int x, int y) {
 		double ratio = planeWidth / resX;
-		return centerPoint.add(rightVec.mult((x - Math.floor(resX/2))* ratio)).add(upVec.mult((y -Math.floor(resY/2))* ratio));
+		return centerPoint.add(rightVec.mult((x - Math.floor(resX/2))* ratio)).add(upVec.mult((y -Math.floor(resY/2))* ratio).mult(-1));
 	}
 	
 	/**

@@ -62,7 +62,8 @@ public class CutoffSpotlight extends PointLight {
 	
 	@Override
 	public Vec intensity(Point hittingPoint, Ray rayToLight) {
-		// TODO Implement:
-		throw new UnimplementedMethodException("edu.cg.scene.lightSources.CutoffSpotlight.intensity()");
+		double cos = rayToLight.direction().mult(-1).normalize().dot(direction.normalize());
+		double degrees = Math.toDegrees(Math.acos(cos));
+		return degrees > cutoffAngle ? new Vec() : super.intensity(hittingPoint,rayToLight).mult(cos);
 	}
 }
