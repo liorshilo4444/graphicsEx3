@@ -4,7 +4,6 @@ import edu.cg.UnimplementedMethodException;
 import edu.cg.algebra.*;
 
 
-// TODO Implement this class which represents an axis aligned box
 public class AxisAlignedBox extends Shape{
     private final static int NDIM=3; // Number of dimensions
     private Point a = null;
@@ -43,8 +42,22 @@ public class AxisAlignedBox extends Shape{
 
     @Override
     public Hit intersect(Ray ray) {
-        // TODO Implement:
-        throw new UnimplementedMethodException("edu.cg.scene.object.AxisAlignedBox.intersect()");
+
+        double t0x = (a.x - ray.source().x) / ray.direction().x;
+        double t1x = (b.x - ray.source().x) / ray.direction().x;
+
+        double t0y = (a.y - ray.source().y) / ray.direction().y;
+        double t1y = (b.y - ray.source().y) / ray.direction().y;
+
+        double t0z = (a.z - ray.source().z) / ray.direction().z;
+        double t1z = (b.z - ray.source().z) / ray.direction().z;
+
+        double maxA = Math.max(t0x, Math.max(t0y, t0z));
+        double minB = Math.min(t1x, Math.min(t1y, t1z));
+
+        if(maxA <= minB) return new Hit(maxA, ray.direction().normalize().neg());
+
+        return null;
     }
 }
 
