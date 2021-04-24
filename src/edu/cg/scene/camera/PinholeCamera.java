@@ -1,6 +1,5 @@
 package edu.cg.scene.camera;
 
-import edu.cg.UnimplementedMethodException;
 import edu.cg.algebra.Point;
 import edu.cg.algebra.Ray;
 import edu.cg.algebra.Vec;
@@ -56,8 +55,8 @@ public class PinholeCamera {
 	 * @return the middle point of the pixel (x,y) in the model coordinates.
 	 */
 	public Point transform(int x, int y) {
-		// TODO Implement this function
-		throw new UnimplementedMethodException("edu.cg.scene.camera.PinholeCamera.transform(int x, int y)");
+		double ratio = planeWidth / resX;
+		return centerPoint.add(rightVec.mult((x - Math.floor(resX/2))* ratio)).add(upVec.mult((y -Math.floor(resY/2))* ratio));
 	}
 	
 	/**
