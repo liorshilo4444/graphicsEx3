@@ -37,7 +37,7 @@ public class Scenes {
 
 		return new Scene()
 				.initAmbient(new Vec(0.1, 0.2, 0.3))
-				.initCamera(new Point(0, 0, 4), new Vec(0,0,-1),new Vec(0.0, 1.0, 0.0), 4.0)
+				.initCamera(new Point(0, 0, 4), new Vec(0, 0, -1), new Vec(0.0, 1.0, 0.0), 4.0)
 				.addLightSource(dirLight)
 				.addLightSource(spotLight)
 				.addSurface(plainSurface)
@@ -126,7 +126,7 @@ public class Scenes {
 				.addSurface(plainSurface4)
 				.addSurface(plainSurface5)
 				.initAmbient(new Vec(0.2, 0.1, 0))
-				.initCamera(new Point(0, 0, 1), new Vec(0,0,-1),new Vec(0.0, 1.0, 0.0), 1.0)
+				.initCamera(new Point(0, 0, 1), new Vec(0, 0, -1), new Vec(0.0, 1.0, 0.0), 1.0)
 				.initName("scene2")
 				.initAntiAliasingFactor(1)
 				.initRenderReflections(true)
@@ -142,7 +142,7 @@ public class Scenes {
 				.initAmbient(new Vec(1.0))
 				.initAntiAliasingFactor(1);
 		// Camera settings:
-		PinholeCamera camera = new PinholeCamera(new Point(12.0,-12.0,8), new Vec(-.5,1.0,-.5),new Vec(0,0,1),5);
+		PinholeCamera camera = new PinholeCamera(new Point(12.0, -12.0, 8), new Vec(-.5, 1.0, -.5), new Vec(0, 0, 1), 5);
 		scene.initCamera(camera);
 		// Light sources:
 		Light light1 = new DirectionalLight().initDirection(new Vec(0.0, 0.5, -1.0)).initIntensity(new Vec(0.4));
@@ -170,20 +170,20 @@ public class Scenes {
 		scene.addSurface(plainSurface);
 
 		// Add Triangle shape Axis Algined Boxes
-		int NUM_ROWS=5;
-		double LENGTH=2.0;
-		double SPACING=0.25;
-		for (int i =0 ; i < NUM_ROWS; i++){
-			int numObjectsPerRow= 2*i+1;
-			double dx=numObjectsPerRow*(LENGTH+SPACING)-SPACING;
-			for(int j =0; j< numObjectsPerRow; j++){
-				Point a = new Point(j*(LENGTH+SPACING)-dx/2,
-						i*(LENGTH+SPACING),
+		int NUM_ROWS = 5;
+		double LENGTH = 2.0;
+		double SPACING = 0.25;
+		for (int i = 0; i < NUM_ROWS; i++) {
+			int numObjectsPerRow = 2 * i + 1;
+			double dx = numObjectsPerRow * (LENGTH + SPACING) - SPACING;
+			for (int j = 0; j < numObjectsPerRow; j++) {
+				Point a = new Point(j * (LENGTH + SPACING) - dx / 2,
+						i * (LENGTH + SPACING),
 						0.0);
-				Point b = new Point(j*(LENGTH+SPACING)+LENGTH-dx/2,
-						i*(LENGTH+SPACING)+LENGTH,
+				Point b = new Point(j * (LENGTH + SPACING) + LENGTH - dx / 2,
+						i * (LENGTH + SPACING) + LENGTH,
 						LENGTH);
-				AxisAlignedBox aab = new AxisAlignedBox(a,b);
+				AxisAlignedBox aab = new AxisAlignedBox(a, b);
 				Surface aabsurface = new Surface(aab, Materials.getRandomMaterial());
 				scene.addSurface(aabsurface);
 			}
@@ -228,7 +228,7 @@ public class Scenes {
 				.initAmbient(new Vec(1.0))
 				.initAntiAliasingFactor(9);
 		// Camera settings:
-		PinholeCamera camera = new PinholeCamera(new Point(11.0,-12.0,8), new Vec(-.5,1.0,-.5),new Vec(0,0,1),5);
+		PinholeCamera camera = new PinholeCamera(new Point(11.0, -12.0, 8), new Vec(-.5, 1.0, -.5), new Vec(0, 0, 1), 5);
 		scene.initCamera(camera);
 		// Light sources:
 		Light light1 = new DirectionalLight().initDirection(new Vec(0.0, 0.5, -1.0)).initIntensity(new Vec(0.4));
@@ -256,15 +256,15 @@ public class Scenes {
 		scene.addSurface(plainSurface);
 
 		// Add Triangle shape Axis Algined Boxes
-		int NUM_ROWS=5;
-		double LENGTH=2.0;
-		double SPACING=0.25;
-		for (int i =0 ; i < NUM_ROWS; i++){
-			int numObjectsPerRow= 2*i+1;
-			double dx=numObjectsPerRow*(LENGTH+SPACING)-SPACING;
-			for(int j =0; j< numObjectsPerRow; j++){
+		int NUM_ROWS = 5;
+		double LENGTH = 2.0;
+		double SPACING = 0.25;
+		for (int i = 0; i < NUM_ROWS; i++) {
+			int numObjectsPerRow = 2 * i + 1;
+			double dx = numObjectsPerRow * (LENGTH + SPACING) - SPACING;
+			for (int j = 0; j < numObjectsPerRow; j++) {
 
-				Sphere sphere = new Sphere(new Point(j*(LENGTH+SPACING)-dx/2,i*(LENGTH+SPACING),1.0),1.0);
+				Sphere sphere = new Sphere(new Point(j * (LENGTH + SPACING) - dx / 2, i * (LENGTH + SPACING), 1.0), 1.0);
 				Surface aabsurface = new Surface(sphere, Materials.getRandomMaterial());
 				scene.addSurface(aabsurface);
 			}
@@ -276,20 +276,20 @@ public class Scenes {
 
 
 		Scene scene = new Scene()
-				.initName("Scene8")
+				.initName("Scene7")
 				.initRenderReflections(true)
 				.initRenderRefractions(true)
-				.initMaxRecursionLevel(5)
+				.initMaxRecursionLevel(8)
 				.initAmbient(new Vec(1.0))
-				.initAntiAliasingFactor(1);
+				.initAntiAliasingFactor(9);
 		// Camera settings:
-		PinholeCamera camera = new PinholeCamera(new Point(11.0,-12.0,8), new Vec(-.5,1.0,-.5),new Vec(0,0,1),5);
+		PinholeCamera camera = new PinholeCamera(new Point(11.0, -12.0, 8), new Vec(-.5, 1.0, -.5), new Vec(0, 0, 1), 5);
 		scene.initCamera(camera);
 
-		Point firstPoint = new Point(1,1,1);
-		Point secondPoint = new Point(2,2,2);
-		for (int i = 0; i < 5; i++){
-			AxisAlignedBox boxShape = new AxisAlignedBox(firstPoint,secondPoint);
+		Point firstPoint = new Point(1, 1, 1);
+		Point secondPoint = new Point(2, 2, 2);
+		for (int i = 0; i < 5; i++) {
+			AxisAlignedBox boxShape = new AxisAlignedBox(firstPoint, secondPoint);
 			Material boxMat = Materials.getRandomMaterial();
 			Surface boxSurface = new Surface(boxShape, boxMat);
 			scene.addSurface(boxSurface);
@@ -299,21 +299,88 @@ public class Scenes {
 			Surface sphereSurface = new Surface(sphereShape, sphereMat);
 			scene.addSurface(sphereSurface);
 
-			firstPoint.add(new Vec(10,0,0));
-			secondPoint.add(new Vec(10,0,0));
+			firstPoint.add(new Vec(10, 0, 0));
+			secondPoint.add(new Vec(10, 0, 0));
 		}
 
-		DirectionalLight dirLight = new DirectionalLight(new Vec(2,-0.5,1.0),new Vec(0.4));
+		DirectionalLight dirLight = new DirectionalLight(new Vec(2, -0.5, 1.0), new Vec(0.4));
 		CutoffSpotlight cutoffSpotlight = new CutoffSpotlight(new Vec(1, -1.5, 0.5), 25.0);
 		cutoffSpotlight.initPosition(new Point(3.0, 5.0, -2.0));
-		cutoffSpotlight.initIntensity(new Vec(1.2,0.5,0.7));
+		cutoffSpotlight.initIntensity(new Vec(1.2, 0.5, 0.7));
 
 		CutoffSpotlight cutoffSpotlight2 = new CutoffSpotlight(new Vec(0.0, -1.0, 0.0), 30.0);
 		cutoffSpotlight2.initPosition(new Point(0.0, 4.0, 0.0));
-		cutoffSpotlight2.initIntensity(new Vec(0.6,0.6,1.0));
+		cutoffSpotlight2.initIntensity(new Vec(0.6, 0.6, 1.0));
 
 		scene.addLightSource(dirLight).addLightSource(cutoffSpotlight).addLightSource(cutoffSpotlight2);
 
 		return scene;
 	}
+
+	public static Scene scene9() {
+
+		// Create basic scene:
+		Scene scene = new Scene()
+				.initName("Scene9")
+				.initRenderReflections(true)
+				.initRenderRefractions(false)
+				.initMaxRecursionLevel(4)
+				.initAmbient(new Vec(2))
+				.initAntiAliasingFactor(1);
+		// Camera settings:
+		PinholeCamera camera = new PinholeCamera(new Point(2, -5, 9), new Vec(-0.1, 0.5, -.65), new Vec(-0.25, 1, 0.25), 3);
+		scene.initCamera(camera);
+		// Light sources:
+		Light light1 = new DirectionalLight().initDirection(new Vec(0.0, 0.5, -1.0)).initIntensity(new Vec(0.4));
+		scene.addLightSource(light1);
+		Light light2 = new CutoffSpotlight().initDirection(new Vec(0.5, 0.0, -1.0)).
+				initIntensity(new Vec(.5)).
+				initCutoffAngle(45).
+				initPosition(new Point(-2.0, 10.0, 10.0));
+		scene.addLightSource(light2);
+		Light light3 = new CutoffSpotlight().initDirection(new Vec(0.0, 0.0, -1.0)).
+				initIntensity(new Vec(.5)).
+				initCutoffAngle(45).
+				initPosition(new Point(0.0, 5.0, 10.0));
+		scene.addLightSource(light3);
+
+		// Add plane to simulate ground
+		Shape planeShape = new Plain(0, 0.0, 1.0, 0.0);
+		Surface plainSurface = new Surface(planeShape, Materials.getWhitePlasticMaterial());
+		scene.addSurface(plainSurface);
+
+		// Add Triangle shape Axis Algined Boxes
+		int NUM_ROWS = 4;
+		double LENGTH = 1.5;
+		double SPACING = 1.25;
+		boolean createBox = false;
+		for (int i = 0; i < NUM_ROWS; i++) {
+			int numObjectsPerRow = NUM_ROWS*i % 3 + 2;
+			double dx = numObjectsPerRow * (LENGTH + SPACING) - SPACING;
+			if (createBox) {
+				for (int j = 0; j < numObjectsPerRow; j++) {
+					Sphere sphere = new Sphere(new Point(j * (LENGTH + SPACING) - dx / 2, i * (LENGTH + SPACING), 1.0), 1.0);
+					Surface aabsurface = new Surface(sphere, Materials.getRandomMaterial());
+					scene.addSurface(aabsurface);
+				}
+			} else {
+				for (int j = 0; j < numObjectsPerRow; j++) {
+					Point a = new Point(j * (LENGTH + SPACING) - dx / 2,
+							i * (LENGTH + SPACING),
+							0.0);
+					Point b = new Point(j * (LENGTH + SPACING) + LENGTH - dx / 2,
+							i * (LENGTH + SPACING) + LENGTH,
+							LENGTH);
+					AxisAlignedBox aab = new AxisAlignedBox(a, b);
+					Surface aabsurface = new Surface(aab, Materials.getRandomMaterial());
+					scene.addSurface(aabsurface);
+				}
+			}
+
+			createBox = !createBox;
+		}
+
+		return scene;
+	}
+
 }
