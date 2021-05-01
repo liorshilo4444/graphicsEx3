@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import edu.cg.Logger;
-import edu.cg.UnimplementedMethodException;
 import edu.cg.algebra.Hit;
 import edu.cg.algebra.Ops;
 import edu.cg.algebra.Point;
@@ -126,13 +125,8 @@ public class Scene {
 	private transient ExecutorService executor = null;
 	private transient Logger logger = null;
 
-	// TODO: add your fields here with the transient keyword
-	//  for example - private transient Object myField = null;
-
 	private void initSomeFields(int imgWidth, int imgHeight, double planeWidth, Logger logger) {
 		this.logger = logger;
-		// TODO: initialize your fields that you added to this class here.
-		//      Make sure your fields are declared with the transient keyword
 	}
 	
 	
@@ -187,15 +181,86 @@ public class Scene {
 			color = color.add(calcColor(ray, 0));
 
 			return color.toColor();
-			// TODO: change this method for AntiAliasing bonus
-			//		You need to shoot antiAliasingFactor-1 additional rays through the pixel return the average color of
-			//      all rays.
 		});
 	}
-	
-	private Vec calcColor(Ray ray, int recursionLevel) {
-		// TODO: implement this method to support ray tracing
-		// 		This is the first call to ray ray-tracing
-		throw new UnimplementedMethodException("edu.cg.scene.Scene.calcColor");
+
+	private Vec calcColor(Ray ray, int recusionLevel) {
+		Hit closetIntersection = getClosestIntersection(ray);
+		if (closetIntersection == null) {
+			return backgroundColor;
+		}
+		Surface surface = closetIntersection.getSurface();
+
+		Surface hitSurface = surface;
+		Point hittingPoint = ray.getHittingPoint(closetIntersection);
+
+		Vec color = ambient.mult(hitSurface.Ka());
+
+		for (Light lightSource : lightSources) {
+			Ray rayToLight = lightSource.rayToLight(hittingPoint);
+			if (isLightIncluded(hittingPoint,lightSource)) {
+				Vec il = lightSource.intensity(hittingPoint, rayToLight);
+				Vec df = calculateDeffuse(hitSurface, lightSource, hittingPoint, closetIntersection);
+				Vec sp = calculateSpecular(hitSurface, ray, rayToLight, closetIntersection);
+				color  = color.add((df.add(sp)).mult(il));
+			}
+		}
+
+		if (++recusionLevel > this.maxRecursionLevel){
+			return color;
+		}
+
+		if(renderReflections && surface.isReflecting()){
+			Ray reflactive = new Ray(hittingPoint, Ops.reflect(ray.direction(),closetIntersection.getNormalToSurface()));
+			color = color.add(calcColor(reflactive, recusionLevel).mult(surface.Kr()));
+		}
+
+		if(renderRefractions && surface.isTransparent()){
+			double n1 = surface.n1(closetIntersection);
+			double n2 = surface.n2(closetIntersection);
+			Vec refractVector = Ops.refract(ray.direction(), closetIntersection.getNormalToSurface(),n1 , n2);
+			Ray refraction = new Ray(hittingPoint, refractVector);
+			Vec kT = surface.Kt();
+			color = color.add(calcColor(refraction, recusionLevel).mult(kT));
+		}
+
+		return color;
+	}
+
+	private Hit getClosestIntersection(Ray ray) {
+		Hit closetIntersection = null;
+		for (Surface surface : this.surfaces) {
+			Hit intersection = surface.intersect(ray);
+			if (intersection != null) {
+				closetIntersection = closetIntersection == null || (intersection.compareTo(closetIntersection) < 0) ? intersection : closetIntersection;
+			}
+		}
+		return closetIntersection;
+	}
+
+	private boolean isLightIncluded(Point hitPoint, Light lightSource){
+		boolean result = true;
+		for(Surface surface: this.surfaces){
+			if(lightSource.isOccludedBy(surface, lightSource.rayToLight(hitPoint))){
+				result = false;
+			}
+		}
+		return result;
+	}
+
+	private Vec calculateSpecular(Surface hitSurface, Ray ray, Ray rayToLight, Hit minIntersectionValue) {
+		Vec V = ray.direction();
+		Vec R = Ops.reflect(rayToLight.direction(),minIntersectionValue.getNormalToSurface());
+		int n = hitSurface.shininess();
+		Vec kS = hitSurface.Ks();
+		double dot = V.dot(R);
+		return dot > 0 ? kS.mult(Math.pow(dot,n)) : new Vec();
+	}
+
+	private Vec calculateDeffuse(Surface hitSurface, Light lightSource, Point hittingPoint, Hit minIntersectionValue) {
+		Vec N = minIntersectionValue.getNormalToSurface();
+		Vec L = lightSource.rayToLight(hittingPoint).direction().normalize();
+		Vec kD = hitSurface.Kd();
+		return kD.mult(N.dot(L));
 	}
 }

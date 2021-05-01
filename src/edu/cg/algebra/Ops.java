@@ -94,8 +94,9 @@ public class Ops {
 	}
 	
 	public static Vec refract(Vec u, Vec normal, double n1, double n2) {
-		//TODO: Bonus implementation
-		// Snell's law: n1*sin(theta1) = n2*sin(theta2)
-		return null;
+		double theta1 = Math.acos(u.dot(normal));
+		double theta2 = Math.asin((n1 * Math.sin(theta1)) / n2);
+		Vec res = normal.mult((n1 / n2) * Math.cos(theta1) - Math.cos(theta2)).add(u.mult(n1 / n2)); // T equation from class
+		return res;
 	}
 }

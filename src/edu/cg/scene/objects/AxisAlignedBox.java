@@ -1,6 +1,5 @@
 package edu.cg.scene.objects;
 
-import edu.cg.UnimplementedMethodException;
 import edu.cg.algebra.*;
 
 
@@ -39,25 +38,89 @@ public class AxisAlignedBox extends Shape{
         bAsArray = b.asArray();
         return this;
     }
-
+//
     @Override
     public Hit intersect(Ray ray) {
+        boolean[] negateByDim = new boolean[3];
+        double[] leftIntervals = new double[3];
+        double[] rightIntervals = new double[3];
 
-        double t0x = (a.x - ray.source().x) / ray.direction().x;
-        double t1x = (b.x - ray.source().x) / ray.direction().x;
+        for(int currentDim = 0; currentDim < 3; currentDim++) {
+            double srcPoint = ray.source().getCoordinate(currentDim);
+            double direction = ray.direction().getCoordinate(currentDim);
 
-        double t0y = (a.y - ray.source().y) / ray.direction().y;
-        double t1y = (b.y - ray.source().y) / ray.direction().y;
+            if (Math.abs(direction) <= Ops.epsilon) {
+                if (srcPoint <= this.aAsArray[currentDim] || srcPoint >= this.bAsArray[currentDim]) {
+                    return null;
+                }
 
-        double t0z = (a.z - ray.source().z) / ray.direction().z;
-        double t1z = (b.z - ray.source().z) / ray.direction().z;
+                leftIntervals[currentDim] = Double.NEGATIVE_INFINITY;
+                rightIntervals[currentDim] = Double.POSITIVE_INFINITY;
+            } else {
 
-        double maxA = Math.max(t0x, Math.max(t0y, t0z));
-        double minB = Math.min(t1x, Math.min(t1y, t1z));
+                double t1 = (this.aAsArray[currentDim] - srcPoint) / direction;
+                double t2 = (this.bAsArray[currentDim] - srcPoint) / direction;
 
-        if(maxA <= minB) return new Hit(maxA, ray.direction().normalize().neg());
+                if (t2 < t1) {
+                    negateByDim[currentDim] = true;
+                } else {
+                    negateByDim[currentDim] = false;
+                }
 
-        return null;
+                leftIntervals[currentDim] = Math.min(t1, t2);
+                rightIntervals[currentDim] = Math.max(t1, t2);
+            }
+        }
+
+        double maxA = findMax(leftIntervals);
+        double minB = findMin(rightIntervals);
+
+        if (maxA > minB || minB <= Ops.epsilon) return null;
+
+        int maxDim = findMaxDim(leftIntervals);
+        Vec normal = this.getNormalByDim(maxDim);
+        if (!negateByDim[maxDim]) {
+            normal = normal.neg();
+        }
+        return new Hit(maxA, normal);
+    }
+
+    private double findMax(double[] array) {
+        double max = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < array.length; i++) {
+            max = array[i] > max ? array[i] : max;
+        }
+        return max;
+    }
+
+    private int findMaxDim(double[] array) {
+        int maxAt = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            maxAt = array[i] > array[maxAt] ? i : maxAt;
+        }
+        return maxAt;
+    }
+
+    private double findMin(double[] array) {
+        double min = Double.POSITIVE_INFINITY;
+        for (int i = 0; i < array.length; i++) {
+            min = array[i] < min ? array[i] : min;
+        }
+        return min;
+    }
+
+    private Vec getNormalByDim(int dim) {
+        switch(dim) {
+            case 0:
+                return new Vec(1, 0, 0);
+            case 1:
+                return new Vec(0, 1, 0);
+            case 2:
+                return new Vec(0, 0, 1);
+            default:
+                return null;
+        }
     }
 }
 
