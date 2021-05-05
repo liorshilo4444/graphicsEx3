@@ -41,15 +41,14 @@ public class Sphere extends Shape {
 	@Override
 	public Hit intersect(Ray ray) {
 		Vec sub = ray.source().sub(center);
-		double a = 1;
 		double b = 2 * ray.direction().dot(sub);
 		double c = sub.dot(sub) - radius * radius;
 
-		double sqrtFormula = Math.sqrt(Math.pow(b, 2) - (4 * a * c));
+		double sqrtFormula = Math.sqrt(Math.pow(b, 2) - (4 * c));
 		if(Double.isNaN(sqrtFormula)) return null;
 
-		double s1 = ((-1 * b) - sqrtFormula) / (2 * a);
-		double s2 = ((-1 * b) + sqrtFormula) / (2 * a);
+		double s2 = ((-1 * b) + sqrtFormula) / 2;
+		double s1 = ((-1 * b) - sqrtFormula) / 2;
 
 		if(s1 > Ops.epsilon && s1 < Ops.infinity){
 			Vec normal = ray.add(s1).sub(center).normalize();

@@ -274,54 +274,9 @@ public class Scenes {
 
 	public static Scene scene8() {
 
-
-		Scene scene = new Scene()
-				.initName("Scene7")
-				.initRenderReflections(true)
-				.initRenderRefractions(true)
-				.initMaxRecursionLevel(8)
-				.initAmbient(new Vec(1.0))
-				.initAntiAliasingFactor(9);
-		// Camera settings:
-		PinholeCamera camera = new PinholeCamera(new Point(11.0, -12.0, 8), new Vec(-.5, 1.0, -.5), new Vec(0, 0, 1), 5);
-		scene.initCamera(camera);
-
-		Point firstPoint = new Point(1, 1, 1);
-		Point secondPoint = new Point(2, 2, 2);
-		for (int i = 0; i < 5; i++) {
-			AxisAlignedBox boxShape = new AxisAlignedBox(firstPoint, secondPoint);
-			Material boxMat = Materials.getRandomMaterial();
-			Surface boxSurface = new Surface(boxShape, boxMat);
-			scene.addSurface(boxSurface);
-
-			Shape sphereShape = new Sphere(secondPoint, 0.5);
-			Material sphereMat = Materials.getRandomMaterial();
-			Surface sphereSurface = new Surface(sphereShape, sphereMat);
-			scene.addSurface(sphereSurface);
-
-			firstPoint.add(new Vec(10, 0, 0));
-			secondPoint.add(new Vec(10, 0, 0));
-		}
-
-		DirectionalLight dirLight = new DirectionalLight(new Vec(2, -0.5, 1.0), new Vec(0.4));
-		CutoffSpotlight cutoffSpotlight = new CutoffSpotlight(new Vec(1, -1.5, 0.5), 25.0);
-		cutoffSpotlight.initPosition(new Point(3.0, 5.0, -2.0));
-		cutoffSpotlight.initIntensity(new Vec(1.2, 0.5, 0.7));
-
-		CutoffSpotlight cutoffSpotlight2 = new CutoffSpotlight(new Vec(0.0, -1.0, 0.0), 30.0);
-		cutoffSpotlight2.initPosition(new Point(0.0, 4.0, 0.0));
-		cutoffSpotlight2.initIntensity(new Vec(0.6, 0.6, 1.0));
-
-		scene.addLightSource(dirLight).addLightSource(cutoffSpotlight).addLightSource(cutoffSpotlight2);
-
-		return scene;
-	}
-
-	public static Scene scene9() {
-
 		// Create basic scene:
 		Scene scene = new Scene()
-				.initName("Scene9")
+				.initName("Scene8")
 				.initRenderReflections(true)
 				.initRenderRefractions(false)
 				.initMaxRecursionLevel(4)

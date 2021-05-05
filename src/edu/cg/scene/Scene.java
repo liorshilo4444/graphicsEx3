@@ -189,19 +189,18 @@ public class Scene {
 		if (closetIntersection == null) {
 			return backgroundColor;
 		}
-		Surface surface = closetIntersection.getSurface();
 
-		Surface hitSurface = surface;
+		Surface surface = closetIntersection.getSurface();
 		Point hittingPoint = ray.getHittingPoint(closetIntersection);
 
-		Vec color = ambient.mult(hitSurface.Ka());
+		Vec color = ambient.mult(surface.Ka());
 
 		for (Light lightSource : lightSources) {
 			Ray rayToLight = lightSource.rayToLight(hittingPoint);
 			if (isLightIncluded(hittingPoint,lightSource)) {
 				Vec il = lightSource.intensity(hittingPoint, rayToLight);
-				Vec df = calculateDeffuse(hitSurface, lightSource, hittingPoint, closetIntersection);
-				Vec sp = calculateSpecular(hitSurface, ray, rayToLight, closetIntersection);
+				Vec df = calculateDeffuse(surface, lightSource, hittingPoint, closetIntersection);
+				Vec sp = calculateSpecular(surface, ray, rayToLight, closetIntersection);
 				color  = color.add((df.add(sp)).mult(il));
 			}
 		}
@@ -211,8 +210,8 @@ public class Scene {
 		}
 
 		if(renderReflections && surface.isReflecting()){
-			Ray reflactive = new Ray(hittingPoint, Ops.reflect(ray.direction(),closetIntersection.getNormalToSurface()));
-			color = color.add(calcColor(reflactive, recusionLevel).mult(surface.Kr()));
+			Ray reflection = new Ray(hittingPoint, Ops.reflect(ray.direction(),closetIntersection.getNormalToSurface()));
+			color = color.add(calcColor(reflection, recusionLevel).mult(surface.Kr()));
 		}
 
 		if(renderRefractions && surface.isTransparent()){
